@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <!-- font awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css"
+      integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- font-family -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@100;300;500;700;900&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>Form Validation</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      :root {
+        --text-color: rgb(24, 24, 29);
+        --button-color: rgb(98, 84, 243);
+        --shadow-support: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+        --border-color: #777;
+        --success-color: #2ecc71;
+        --error-color: #e74c3c;
+      }
+      .container {
+        /* max-width: 120rem;
+        margin: 0 auto; */
+        width: calc(100vw - 65vw);
+        background-color: #fff;
+        max-width: 100%;
+      }
+      html {
+        font-size: 62.5%;
+      }
+
+      .btn {
+        text-align: center;
+        margin: 1.5rem 0;
+        background-color: var(--button-color);
+        color: white;
+        font-weight: 300;
+        padding: 1rem 2rem;
+        border: none;
+        text-transform: uppercase;
+        cursor: pointer;
+        color: rgb(98 84 243);
+        font-size: 1.8rem;
+        transition: all 0.3s ease;
+        background-color: rgb(0 0 0 /0%);
+        border: 0.1rem solid rgb(98 84 243);
+        -webkit-transition: all 0.3s ease 0s;
+        -moz-transition: all 0.3s ease 0s;
+        -o-transition: all 0.3s ease 0s;
+        /* border-radius: 3rem; */
+        width: 100%;
+      }
+      .btn:hover {
+        box-shadow: 0 2rem 2rem 0 rgb(132, 144, 255/30%);
+        box-shadow: var(--shadow-support);
+        transform: scale(0.96);
+        background-color: rgb(98 84 243);
+        color: #fff;
+      }
+      .center {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        /* for center div */
+        min-height: 100vh;
+        width: 100vw;
+        /* border: 0.3rem solid red; */
+      }
+      section {
+      }
+      .registration {
+        box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.2);
+        /* padding: 2rem; */
+        border-radius: 0.5rem;
+        /* border: 0.3rem solid red; */
+        width: 35%;
+      }
+      .header {
+        border-top-left-radius: 0.5rem;
+        border-top-right-radius: 0.5rem;
+        background-color: var(--button-color);
+        padding: 2rem;
+      }
+      .header h2 {
+        text-align: center;
+        text-transform: uppercase;
+        color: #fff;
+        font-size: 2rem;
+        font-weight: 500;
+        /* color: var(--text-color); */
+      }
+      .form {
+        padding: 2rem;
+        /* margin-top: 2rem; */
+      }
+      .form-control {
+        margin-bottom: 1.5rem;
+        position: relative;
+      }
+      .form-control label {
+        display: inline-block;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: 300;
+        color: var(--text-color);
+        opacity: 0.7;
+      }
+      .form-control input {
+        width: 100%;
+        /* padding: 1rem 2.2rem; */
+        font-size: 1.2rem;
+        border: 1px solid var(--border-color);
+        border-radius: 0.5rem;
+        padding: 0.8rem;
+      }
+      .form-control input:focus {
+        outline: none;
+        border-color: var(--button-color);
+      }
+
+      .form-control i {
+        position: absolute;
+        right: 2%;
+        top: 3.7rem;
+        visibility: hidden;
+      }
+
+      .form-control small {
+        visibility: hidden;
+        position: absolute;
+        font-size: 1rem;
+        font-weight: 300;
+        left: 0;
+        bottom: -1.3rem;
+        color: var(--error-color);
+      }
+
+      /* -------------------- adding class error using javascript---------------------- */
+      .form-control.error small {
+        visibility: visible;
+      }
+
+      /* -------------------- adding class success and error using javascript---------------------- */
+      .form-control.success i.fa-circle-check {
+        color: var(--success-color);
+        visibility: visible;
+      }
+
+      .form-control.error i.fa-circle-exclamation {
+        color: var(--error-color);
+        visibility: visible;
+      }
+
+      /* -------------------- adding class success and error using javascript---------------------- */
+      .form-control.success input {
+        border-color: var(--success-color);
+      }
+      .form-control.error input {
+        border-color: var(--error-color);
+      }
+
+      /* -------------------------- responsive design --------------------------- */
+      @media (max-width: 998px) {
+        .container {
+          max-width: 90rem;
+          margin: 0 auto;
+        }
+        .registration {
+          width: 40%;
+        }
+      }
+      @media (max-width: 768px) {
+        .container {
+          /* max-width: 100%;
+          max-width: calc(100vw - 30vw); */
+          max-width: 70rem;
+          margin: 0 auto;
+        }
+        .registration {
+          width: 70%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="container center">
+      <div class="registration">
+        <div class="header">
+          <h2>REGISTRATION FORM</h2>
+        </div>
+        <form class="form" id="form">
+          <div class="form-control">
+            <label for="username">Username</label>
+            <input
+              id="username"
+              type="text"
+              placeholder="Enter your fullName"
+              autocomplete="off"
+            />
+            <i class="fa-solid fa-circle-check"></i>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <small>Error Msg</small>
+          </div>
+          <div class="form-control">
+            <label for="email">Email</label>
+            <input
+              id="email"
+              type="email"
+              placeholder="Enter your Email"
+              autocomplete="off"
+            />
+            <i class="fa-solid fa-circle-check"></i>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <small>Error Msg</small>
+          </div>
+          <div class="form-control">
+            <label for="phonenumber">Phone Number</label>
+            <input
+              id="phonenumber"
+              type="number"
+              placeholder="Enter your Phone Number"
+              autocomplete="off"
+            />
+            <i class="fa-solid fa-circle-check"></i>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <small>Error Msg</small>
+          </div>
+          <div class="form-control">
+            <label for="password">Password</label>
+            <input
+              id="password"
+              type="password"
+              placeholder="Enter your Password"
+              autocomplete="off"
+            />
+            <i class="fa-solid fa-circle-check"></i>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <small>Error Msg</small>
+          </div>
+          <div class="form-control">
+            <label for="confirmpassword">Confirm Password</label>
+            <input
+              id="confirmpassword"
+              type="password"
+              placeholder="Enter your Password again"
+              autocomplete="off"
+            />
+            <i class="fa-solid fa-circle-check"></i>
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <small>Error Msg</small>
+          </div>
+          <button type="submit" class="btn">Submit</button>
+        </form>
+      </div>
+    </section>
+  </body>
+  <!-- sweet Alert -->
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script>
+    const from = document.getElementById("form");
+    const userName = document.getElementById("username");
+    const email = document.getElementById("email");
+    const phoneNumber = document.getElementById("phonenumber");
+    const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmpassword");
+
+    // add event on submit
+    from.addEventListener("submit", (e) => {
+      e.preventDefault();
+      validate();
+    });
+
+    // validate function
+    const validate = () => {
+      const userNameVal = userName.value.trim();
+      const emailVal = email.value.trim();
+      const phoneNumberVal = phoneNumber.value.trim();
+      const passwordVal = password.value.trim();
+      const confirmPasswordVal = confirmPassword.value.trim();
+
+      // sendData and done msg
+      const sendData = (successRate, count, userNameVal) => {
+        if (successRate === count) {
+          // alert("Registration Successfull");
+          Swal.fire(
+            "Welcome! " + userNameVal,
+            "Registration Successfull",
+            "success"
+          );
+          // location.href = `demo.html?username=${userNameVal}`
+        }
+      };
+
+      // for final data validation
+      const successMsg = (userNameVal) => {
+        let formCon = document.getElementsByClassName("form-control");
+        let count = formCon.length - 1;
+        for (let i = 0; i < formCon.length; i++) {
+          if (formCon[i].className === "form-control success") {
+            let successRate = 0 + i;
+            console.log(successRate);
+            sendData(successRate, count, userNameVal);
+          } else {
+            return false;
+          }
+        }
+      };
+
+      // more email validate
+      const isEmail = (emailVal) => {
+        let atSymbol = emailVal.indexOf("@");
+        if (atSymbol < 1) return false;
+        let dot = emailVal.lastIndexOf(".");
+        //example1 = vi@gm.com for condition true , example2 = vi@.com for condition false
+        if (dot <= atSymbol + 2) return false;
+        // dot should  be last
+        if (dot === emailVal.length - 1) return false;
+        return true;
+      };
+
+      // validate username
+      if (userNameVal === "") {
+        setErrorMsg(userName, "username cannot be blank");
+      } else if (userNameVal.length <= 3) {
+        setErrorMsg(userName, "username min 4 char");
+      } else {
+        setSuccessMsg(userName);
+      }
+
+      //validate email
+      if (emailVal === "") {
+        setErrorMsg(email, "email cannot be blank");
+      } else if (!isEmail(emailVal)) {
+        setErrorMsg(email, "Not a valid Email");
+      } else {
+        setSuccessMsg(email);
+      }
+
+      // validate phone number
+      if (phoneNumberVal === "") {
+        setErrorMsg(phoneNumber, "phone number cannot be blank");
+      } else if (phoneNumberVal.length !== 10) {
+        setErrorMsg(phoneNumber, "Phone Number must be 10 digit");
+      } else {
+        setSuccessMsg(phoneNumber);
+      }
+
+      // validate password
+      if (passwordVal === "") {
+        setErrorMsg(password, "password cannot be blank");
+      } else if (passwordVal.length <= 5) {
+        setErrorMsg(password, "Minimum 6 char");
+      } else {
+        setSuccessMsg(password);
+      }
+
+      // validate password
+      if (confirmPasswordVal === "") {
+        setErrorMsg(confirmPassword, "confirm password cannot be blank");
+      } else if (confirmPasswordVal !== passwordVal) {
+        setErrorMsg(confirmPassword, "password are not matching");
+      } else {
+        setSuccessMsg(confirmPassword);
+      }
+
+      successMsg(userNameVal);
+    };
+
+    // error msg function
+    const setErrorMsg = (input, errorMsg) => {
+      const formControl = input.parentElement;
+      const small = formControl.querySelector("small");
+      formControl.className = "form-control error";
+      small.innerText = errorMsg;
+    };
+
+    // success msg function
+    const setSuccessMsg = (input) => {
+      const formControl = input.parentElement;
+      formControl.className = "form-control success";
+    };
+  </script>
+</html>
